@@ -2,4 +2,5 @@
 stackage-everything.cabal
 *~
 output/*
+!output/src
 .stack-work
