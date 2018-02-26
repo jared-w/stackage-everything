@@ -44,7 +44,13 @@ generatePackage ltsVersion generatedPackageVersion stackageFilename = do
     putStrLn "Parsing input"
     case parse cabalConstraintFileP stackageFilename contents of
         Left err -> T.putStrLn "Parse error: " >> print err
-        Right packages -> generateOutputFiles packages ltsVersion generatedPackageVersion
+        Right (Packages packages) -> do
+            T.putStrLn "#!/usr/bin/env bash"
+            T.putStrLn ""
+            T.putStrLn "set -veuo pipefail"
+            T.putStrLn ""
+            for_ packages (\(Name pkgName, _pkgVersion) ->
+                T.putStrLn ("stack build --dry-run --prefetch --resolver lts-" <> ltsVersion <> " " <> pkgName) )
 
 -- | A list of packages and their respective versions.
 newtype Packages = Packages [(Name, Version)]
