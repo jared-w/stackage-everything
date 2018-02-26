@@ -1,8 +1,13 @@
 #!/usr/bin/env stack
 {- stack --resolver lts-9.0 --install-ghc runghc
+    --package base
+    --package bytestring
+    --package lens
     --package megaparsec
     --package text
-    --package containers
+    --package wreq
+    --
+    -hide-all-packages
 -}
 
 {-# LANGUAGE OverloadedStrings #-}
