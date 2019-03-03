@@ -23,9 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - bytestring
 - optparse-generic
-- lens
 - megaparsec
-- prettyprinter
 - text
 - req
 - process
