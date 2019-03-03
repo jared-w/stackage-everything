@@ -49,7 +49,7 @@ main = do
       T.hPutStrLn stderr (T.pack $ errorBundlePretty e)
     Right v -> do
       T.hPutStrLn stderr $ "Downloading " <> ltsTextVersion v
-      generateScript v
+      prepareScript v
 
 ltsTextVersion :: LtsVersion -> Text
 ltsTextVersion (LtsVersion major minor) =
@@ -69,8 +69,8 @@ downloadCabalConstraints ltsVersion = runReq defaultHttpConfig $ do
     mempty
   pure . T.decodeUtf8 $ responseBody response
 
-generateScript :: LtsVersion -> IO ()
-generateScript ltsVersion = do
+prepareScript :: LtsVersion -> IO ()
+prepareScript ltsVersion = do
   T.hPutStrLn stderr ("Downloading constraints for LTS-" <> ltsTextVersion ltsVersion)
   parse cabalConstraintFileP mempty <$> downloadCabalConstraints ltsVersion >>= \case
     Left  err      -> T.putStrLn "Parse error: " >> print err
@@ -115,6 +115,8 @@ packageP = do
   name <- Name . T.pack <$> some (alphaNumChar <|> char '-')
   space
   version <-
+    -- I can't figure out how to get the _ <- string bit to work correctly if I
+    -- write this in an Applicative style and it's driving me nuts
     let versionNumber = do
           _ <- string "=="
           v <- some (digitChar <|> char '.')
