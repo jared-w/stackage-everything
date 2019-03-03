@@ -1,0 +1,7 @@
+-- To only use tested packages, uncomment the following line:
+-- remote-repo: stackage-lts-13.9:http://www.stackage.org/lts-13.9
+constraints: abstract-deque ==0.3,
+             abstract-deque-tests ==0.3,
+             abstract-par ==0.3.3,
+             accuerr ==0.2.0.2,
+             ace ==0.6
